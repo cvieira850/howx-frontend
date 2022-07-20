@@ -1,6 +1,6 @@
 import { Icon, Stack, Text, Link as ChakraLink } from "@chakra-ui/react";
 import { useContext } from "react";
-import { RiContactsLine, RiDashboardLine, RiGamepadLine, RiLoginBoxLine, RiLogoutBoxLine, RiRegisteredLine, RiSortAsc } from "react-icons/ri";
+import { RiContactsLine,  RiGamepadLine, RiLoginBoxLine, RiLogoutBoxLine, RiRegisteredLine, RiSortAsc } from "react-icons/ri";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Can } from "../Can";
 import { NavLink } from "./NavLink";
@@ -26,13 +26,11 @@ export function SidebarNav() {
       </NavSection>
       <Can>
         <NavSection title="GERAL">
-          <NavLink href="/crossword" icon={RiGamepadLine}>Crossword</NavLink>
-          <NavLink href="/ranking" icon={RiSortAsc}>Ranking</NavLink>
+          <NavLink href="/requests" icon={RiGamepadLine}>Pedidos</NavLink>
         </NavSection>
       </Can>
-      <Can roles={['admin']}>
+      <Can >
         <NavSection title="ADMINISTRATIVO">
-          <NavLink href="/dashboard" icon={RiDashboardLine}>Dashboard</NavLink>
           <NavLink href="/users" icon={RiContactsLine}>Usuários</NavLink>
         </NavSection>
       </Can>

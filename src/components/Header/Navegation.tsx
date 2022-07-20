@@ -1,7 +1,10 @@
 import { Flex, HStack, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 import { ActiveLink } from "../ActiveLink";
 
 export function Navegation() {
+  const { isAuthenticated, signOut } = useContext(AuthContext);
   return (
     <Flex
       flex="1"
@@ -14,52 +17,37 @@ export function Navegation() {
       mr={["0", "64"]}
     >
       <HStack spacing="6">
-        <ActiveLink href="/crossword" passHref>
-          <Flex as="button" fontSize="md" color="white">
-            Crossword
-          </Flex>
-        </ActiveLink>
-        <ActiveLink href="/ranking" passHref>
-          <Flex as="button" fontSize="md" color="white">
-            Ranking
-          </Flex>
-        </ActiveLink>
-        <Menu>
-          <MenuButton>
-            Administrativo
-          </MenuButton>
-          <MenuList>
-            <MenuItem
-              as="a"
-              href="/dashboard"
-              padding="5"
-              color="blue.700"
-              fontWeight="500"
-              _hover={
-                {
-                  bg: "gray.200",
-                }
-              }
-            >
-              Dashboard
-            </MenuItem>
-            <MenuItem
-              as="a"
-              href="/users"
-              padding="5"
-              color="blue.700"
-              fontWeight="500"
-              _hover={
-                {
-                  bg: "gray.200",
-                }
-              }
-            >
-              Usuários
-            </MenuItem>
-          </MenuList>
-        </Menu>
-      
+        {isAuthenticated && (
+          <>
+            <ActiveLink href="/requests" passHref>
+              <Flex as="button" fontSize="md" color="white">
+                Pedidos
+              </Flex>
+            </ActiveLink>
+        
+            <Menu>
+              <MenuButton>
+                Administrativo
+              </MenuButton>
+              <MenuList>
+                <MenuItem
+                  as="a"
+                  href="/users"
+                  padding="5"
+                  color="blue.700"
+                  fontWeight="500"
+                  _hover={
+                    {
+                      bg: "gray.200",
+                    }
+                  }
+                >
+                  Usuários
+                </MenuItem>
+              </MenuList>
+            </Menu> 
+          </>
+          )}
       </HStack>
     </Flex>
   );

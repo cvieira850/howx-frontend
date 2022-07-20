@@ -13,10 +13,11 @@ type User = {
     name?: string;
     email: string;
     role?: 'admin' | 'user' | 'sysAdmin';
+    accessToken: string;
 }
 
 type AuthContextData = {
-    signIn: (credentials: SignInCredentials) => Promise<void>;
+    signIn: (credentials: SignInCredentials) => Promise<User | null>;
     signOut: () =>  void;
     user:User;
     isAuthenticated: boolean;
@@ -61,41 +62,50 @@ export function AuthProvider({ children } : AuthProviderProps) {
 
     useEffect(() => {
         const { 'nextauth.token' : token} = parseCookies()
-        setUser({ id: '1234', name: 'Caio Vieira', email: 'contato@caiovieira.com.br', role: 'user' })
-        if(!token) {
-            // api.get('/me').then(response => {
-            //     const { email, name, id, role } = response.data
-            //     if(role === 'admin') {
-            //         isAdmin = true
-            //     }
-            //     setUser({ id, name, email, role })
-            // }).catch(() => {
-            //     signOut()
-            // })
+        // setUser({ id: '1234', name: 'Caio Vieira', email: 'contato@caiovieira.com.br', role: 'user' })
+        if(token) {
+            api.get('/me').then(response => {
+                const { email, name, id, role, accessToken } = response.data
+                console.log(response.data)
+                if(role === 'admin') {
+                    isAdmin = true
+                }
+                setUser({ id, name, email, role, accessToken })
+            }).catch(() => {
+                signOut()
+            })
         }
     },[])
 
-    async function signIn({email, password}: SignInCredentials) {
+    async function signIn({email, password}: SignInCredentials): Promise<User | null> {
         try {
             const response = await api.post('signin', {
                 email,
                 password
             })
-            const { accessToken } = response.data;
-            setCookie(undefined, 'nextauth.token', accessToken, {
+            const { access_token } = response.data.data
+
+            setCookie(undefined, 'nextauth.token', access_token, {
                 maxAge: 60 * 60 * 24 * 30, //30 dias
                 path: '/'
             })
 
             setUser({
-                email
+                email,
+                accessToken: access_token
             })
-            console.log(response.data)
-            api.defaults.headers['x-access-token'] = accessToken;
+            
+            api.defaults.headers['x-access-token'] = access_token;
 
             Router.push("/")
+            const token: string = access_token
+            return { 
+                email,
+                accessToken: token
+            }
         } catch (err){
             console.log(err)
+            return null
         }
         
     }

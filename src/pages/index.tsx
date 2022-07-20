@@ -1,4 +1,4 @@
-import { Button, Flex } from '@chakra-ui/react'
+import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react'
 import type { NextPage } from 'next'
 import { useContext } from 'react'
 import Footer from '../components/Footer'
@@ -13,9 +13,11 @@ const Home: NextPage = () => {
       <Flex direction="column" h="100vh" minHeight="100%">
         <Header />
         <Sidebar />
-        <h1>Hello World</h1>
+        <Flex w="100%" my="6" justifyContent={"center"} maxWidth={1480} mx="auto" px="6">
+            <Heading as='h3'>Bem vindo ao HowXX</Heading>
+
+        </Flex>
       </Flex>
-      <Footer/>
     </Flex>
   )
 }

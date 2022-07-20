@@ -16,7 +16,7 @@ export function Logo({isFooter = false}: LogoProps) {
         width={isFooter? "32" : "64"}
         color="white"
       >
-        CVieira
+        HowXX
         <Text  as="span" marginLeft="1" color="orange.500">.</Text>
       </Flex>
     </Link>

@@ -1,6 +1,7 @@
 import { Button, Flex, Stack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup';
+import { useQuery } from "react-query";
 
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "../../components/Form/Input";
@@ -9,6 +10,7 @@ import FormHeader from "../../components/Form/FormHeader";
 import LoginHelpList from "./LoginHelpList";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
+import { queryClient } from "../../services/queryClient";
 
 type SignInFormData = {
   email: string;
@@ -24,13 +26,14 @@ export function  LoginForm() {
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(signInFormSchema),
   });
-  const { signIn} = useContext(AuthContext)
+  const { signIn } = useContext(AuthContext)
 
   const { errors } = formState;
 
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
     await new Promise(resolve => setTimeout(resolve,2000))
-    await signIn(values)
+    await queryClient.prefetchQuery('me',() => signIn(values))
+    // useQuery('me', ()=> signIn(values))
     console.log(values);
   }
 
